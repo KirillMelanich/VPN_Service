@@ -1,9 +1,13 @@
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import CreateView, FormView
 
-from .models import User, Site, InternalRoute
+from .forms import RegisterForm
+from .models import User, Site
 
 
 @login_required
@@ -22,7 +26,7 @@ def index(request):
         "num_visits": num_visits + 1,
     }
 
-    return render(request, "taxi/index.html", context=context)
+    return render(request, "vpn/index.html", context=context)
 
 
 class SiteListView(LoginRequiredMixin, generic.ListView):
@@ -38,4 +42,19 @@ class SiteDetailView(LoginRequiredMixin, generic.DetailView):
 class UserDetailView(LoginRequiredMixin, generic.DetailView):
     model = User
     queryset = User.objects.all()
+
+
+@login_required
+def profile_view(request):
+    return render(request, "vpn/profile.html")
+
+
+class RegisterView(FormView):
+    form_class = RegisterForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy("vpn:profile")
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 

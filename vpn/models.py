@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(null=True)
     preferences = models.CharField(max_length=63)
 
     def __str__(self):

@@ -4,11 +4,13 @@ from .views import (
     index,
     UserDetailView,
     SiteListView,
-    SiteDetailView,
+    SiteDetailView, profile_view, RegisterView,
 )
 
 urlpatterns = [
     path("", index, name="index"),
+    path("profile", profile_view, name="profile"),
+    path("register/", RegisterView.as_view(), name="register"),
     path("sites/", SiteListView.as_view(), name="site-list"),
     path("sites/<int:pk>/", SiteDetailView.as_view(), name="site-detail"),
     path(

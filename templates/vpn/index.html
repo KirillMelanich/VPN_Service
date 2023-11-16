@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>VPN Service Home</h1>
+  <p>Welcome to VPN Service Ever!</p>
+  <h2>Dynamic content</h2>
+  <p>VPN service has the following record counts:</p>
+  <ul>
+    <li><strong>Sites:</strong> {{ num_sites }}</li>
+    <li><strong>Users:</strong> {{ num_users }}</li>
+  </ul>
+  <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}</p>
+{% endblock %}
