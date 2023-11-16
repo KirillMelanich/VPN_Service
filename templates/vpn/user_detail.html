@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Name: {{ author.first_name }} {{ author.last_name }}</h1>
+  <h2>{% if author.pseudonym %}({{ author.pseudonym }}){% endif %}</h2>
+  <hr>
+  <p><strong>Username: {{ author.username }}</strong></p>
+  <p><strong>Email: {{ author.email }}</strong></p>
+  <p><strong>Is staff: {{ author.is_staff }}</strong></p>
+  <hr>
+{% endblock %}

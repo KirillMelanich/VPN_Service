@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Sites List
+  <a style="float: right" class="btn btn-primary" href="{% url 'vpn:site-create' %}">Add New Site +</a>
+  </h1>
+  <hr>
+  <form action="" method="get" class="form-inline">
+  {{ search_form|crispy }}
+    <input class="btn btn-secondary" type="submit" value="🔎">
+  </form>
+  <hr>
+  {% if site_list %}
+    <table class="table">
+    <tr>
+      <th>Site name</th>
+      <th>Site link</th>
+      <th>Go to site</th>
+      <th>Update</th>
+      <th>Delete</th>
+    </tr>
+
+    {% for site in site_list %}
+    <tr>
+      <td>
+        {{site.site_name}}
+      </td>
+      <td>
+        {{ site.site_url }}
+      </td>
+      <td>
+        <a class="btn btn-primary" href="{{site.get_absolute_url}}">Go to site!</a>
+      </td>
+        <td>
+            <a href="{% url 'vpn:site-update' pk=site.id %}">update</a>
+        </td>
+      <td>
+            <a href="{% url 'vpn:site-delete' pk=site.id %}" style="color: red;">delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+      <p>No sites, motherfucker</p>
+    {% endif %}
+
+{% endblock %}

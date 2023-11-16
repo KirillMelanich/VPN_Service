@@ -1,13 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>VPN Profile</h1>
-  <p>Profile</p>
-  <h2>Dynamic content</h2>
-  <p>VPN service has the following record counts:</p>
-  <ul>
-    <li><strong>Sites:</strong> {{ num_sites }}</li>
-    <li><strong>Users:</strong> {{ num_users }}</li>
-  </ul>
-  <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}</p>
+  <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
+    <a style="float: right" class="btn btn-secondary" href="{% url 'vpn:user-update' pk=user.id %}">Edit</a>
+  <h2>{% if user.preferences %}({{ user.preferences }}){% endif %}</h2>
+  <hr>
+  <p><strong>Username: {{ user.username }}</strong></p>
+  <p><strong>Email: {{ user.email }}</strong></p>
+  <p><strong>Age: {{ user.age }}</strong></p>
+  <hr>
 {% endblock %}
+{#{% block content %}#}
+{#  <h1>VPN Profile</h1>#}
+{#  <p>Profile</p>#}
+{#  <h2>Dynamic content</h2>#}
+{#  <p>VPN service has the following record counts:</p>#}
+{#  <ul>#}
+{#    <li><strong>Sites:</strong> {{ num_sites }}</li>#}
+{#    <li><strong>Users:</strong> {{ num_users }}</li>#}
+{#  </ul>#}
+{#  <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}</p>#}
+{#{% endblock %}#}

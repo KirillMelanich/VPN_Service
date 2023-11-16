@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Title: {{ site.site_name }}
+  <a style="float: right" class="btn btn-secondary" href="{% url 'vpn:site-update' pk=site.id %}">Edit</a>
+  </h1>
+  <p><strong>Site Name: {{ site.site_name }}</strong></p>
+  <p><strong>Format: {{ site.site_url }}</strong></p>
+
+{% endblock %}

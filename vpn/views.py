@@ -1,12 +1,11 @@
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import CreateView, FormView
+from django.views.generic import  FormView
 
-from .forms import RegisterForm
+from .forms import RegisterForm, SiteForm, UserForm, SiteSearchForm
 from .models import User, Site
 
 
@@ -31,17 +30,73 @@ def index(request):
 
 class SiteListView(LoginRequiredMixin, generic.ListView):
     model = Site
-    paginate_by = 5
-    queryset = Site.objects.all()
+    template_name = 'vpn/site_list.html'
+    context_object_name = 'site_list'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(SiteListView, self).get_context_data(**kwargs)
+
+        site_name = self.request.GET.get("site_name", "")
+
+        context["search_form"] = SiteSearchForm(
+            initial={
+                "site_name": site_name
+            }
+        )
+
+        return context
+
+    def get_queryset(self):
+        queryset = Site.objects.filter(user=self.request.user)
+        form = SiteSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return queryset.filter(
+                site_name__icontains=form.cleaned_data["site_name"],
+            )
+
+        return queryset
+
+
+class SiteCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Site
+    form_class = SiteForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class SiteDetailView(LoginRequiredMixin, generic.DetailView):
     model = Site
 
 
+class SiteUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Site
+    form_class = SiteForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class SiteDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Site
+    success_url = reverse_lazy("vpn:site-list")
+    template_name = "vpn/site_confirm_delete.html"
+
+    def get_queryset(self):
+        return Site.objects.filter(user=self.request.user)
+
+
 class UserDetailView(LoginRequiredMixin, generic.DetailView):
     model = User
     queryset = User.objects.all()
+
+
+class UserUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = User
+    form_class = UserForm
 
 
 @login_required

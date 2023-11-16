@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 
 class User(AbstractUser):
@@ -9,11 +10,20 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.first_name} {self.last_name})"
 
+    def get_absolute_url(self):
+        return reverse("vpn:user-detail", args=[str(self.id)])
+
 
 class Site(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     site_name = models.CharField(max_length=255)
     site_url = models.URLField()
+
+    def __str__(self):
+        return f"{self.site_name}"
+
+    def get_absolute_url(self):
+        return reverse("vpn:site-detail", args=[str(self.id)])
 
 
 class Statistics(models.Model):
