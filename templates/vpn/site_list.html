@@ -37,7 +37,7 @@
             <a href="{% url 'vpn:site-update' pk=site.id %}">update</a>
         </td>
       <td>
-            <a href="{% url 'vpn:site-delete' pk=site.id %}" style="color: red;">delete</a>
+            <a class="btn btn-danger" href="{% url 'vpn:site-delete' pk=site.id %}">delete</a>
       </td>
     </tr>
     {% endfor %}

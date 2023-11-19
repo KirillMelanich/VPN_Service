@@ -2,13 +2,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from vpn.models import Site
+from vpn.models import Site, Profile
 
 
 class RegisterForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'age')
+        fields = ('username', 'password1', 'password2', 'first_name', 'last_name')
 
 
 class SiteForm(forms.ModelForm):
@@ -28,8 +28,8 @@ class SiteSearchForm(forms.Form):
     )
 
 
-class UserForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
 
     class Meta:
-        model = get_user_model()
-        exclude = ['username', 'email']
+        model = Profile
+        fields = "__all__"

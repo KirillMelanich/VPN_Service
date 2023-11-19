@@ -2,14 +2,14 @@ from django.urls import path
 
 from .views import (
     index,
-    UserDetailView,
     SiteListView,
-    SiteDetailView, profile_view, RegisterView, SiteCreateView, SiteUpdateView, SiteDeleteView, UserUpdateView,
+    SiteDetailView, RegisterView, SiteCreateView, SiteUpdateView, SiteDeleteView, ProfileDetailView, ProfileUpdateView,
 )
 
 urlpatterns = [
     path("", index, name="index"),
-    path("profile", profile_view, name="profile"),
+    path("profile/<int:pk>/", ProfileDetailView.as_view(), name="profile-detail"),
+    path("profile/<int:pk>/update/", ProfileUpdateView.as_view(), name="profile-update"),
     path("register/", RegisterView.as_view(), name="register"),
     path("sites/", SiteListView.as_view(), name="site-list"),
     path(
@@ -28,12 +28,6 @@ urlpatterns = [
         name="site-delete",
     ),
     path("sites/<int:pk>/", SiteDetailView.as_view(), name="site-detail"),
-    path(
-        "users/<int:pk>/", UserDetailView.as_view(), name="user-detail"
-    ),
-    path(
-        "users/<int:pk>/", UserUpdateView.as_view(), name="user-update"
-    ),
 ]
 
 app_name = "vpn"

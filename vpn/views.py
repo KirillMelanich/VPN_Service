@@ -5,8 +5,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import  FormView
 
-from .forms import RegisterForm, SiteForm, UserForm, SiteSearchForm
-from .models import User, Site
+from .forms import RegisterForm, SiteForm, SiteSearchForm, ProfileForm
+from .models import User, Site, Profile
 
 
 @login_required
@@ -89,27 +89,34 @@ class SiteDeleteView(LoginRequiredMixin, generic.DeleteView):
         return Site.objects.filter(user=self.request.user)
 
 
-class UserDetailView(LoginRequiredMixin, generic.DetailView):
-    model = User
-    queryset = User.objects.all()
+# class UserDetailView(LoginRequiredMixin, generic.DetailView):
+#     model = User
+#     queryset = User.objects.all()
 
 
-class UserUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = User
-    form_class = UserForm
+# @login_required
+# def profile_view(request):
+#     return render(request, "vpn/profile.html")
+
+class ProfileDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Profile
+    template_name = 'vpn/profile.html'
 
 
-@login_required
-def profile_view(request):
-    return render(request, "vpn/profile.html")
-
-
-class RegisterView(FormView):
-    form_class = RegisterForm
-    template_name = 'registration/register.html'
-    success_url = reverse_lazy("vpn:profile")
+class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Profile
+    form_class = ProfileForm
 
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
 
+
+class RegisterView(FormView):
+    form_class = RegisterForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy("vpn:profile-detail")
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

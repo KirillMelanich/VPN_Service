@@ -4,14 +4,26 @@ from django.urls import reverse
 
 
 class User(AbstractUser):
-    age = models.PositiveIntegerField(null=True)
-    preferences = models.CharField(max_length=63)
 
     def __str__(self):
         return f"{self.username} ({self.first_name} {self.last_name})"
 
     def get_absolute_url(self):
         return reverse("vpn:user-detail", args=[str(self.id)])
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    age = models.PositiveIntegerField(blank=True)
+    nick_name = models.CharField(max_length=63, unique=True, blank=False)
+    nation = models.CharField(max_length=255)
+    info = models.TextField(blank=False)
+
+    def __str__(self):
+        return f"{self.nick_name}"
+
+    def get_absolute_url(self):
+        return reverse("vpn:profile-detail", args=[str(self.id)])
 
 
 class Site(models.Model):

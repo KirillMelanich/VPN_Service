@@ -1,23 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
-    <a style="float: right" class="btn btn-secondary" href="{% url 'vpn:user-update' pk=user.id %}">Edit</a>
-  <h2>{% if user.preferences %}({{ user.preferences }}){% endif %}</h2>
-  <hr>
-  <p><strong>Username: {{ user.username }}</strong></p>
-  <p><strong>Email: {{ user.email }}</strong></p>
-  <p><strong>Age: {{ user.age }}</strong></p>
-  <hr>
+  <div class="container mx-auto mt-8">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h1 class="text-4xl font-bold mb-4">{{ profile.nick_name }} Profile</h1>
+    <a style="float: right" class="btn btn-primary" href="{% url 'vpn:profile-update' pk=user.id%}">Update info</a>
+      <h2 class="text-lg mb-4">{% if user.preferences %}({{ user.preferences }}){% endif %}</h2>
+      <hr class="mb-4">
+
+      <div class="mb-4">
+        <h3 class="text-xl font-bold mb-2">User Information</h3>
+        <dl class="grid grid-cols-2 gap-4">
+          <dt class="text-gray-500">User:</dt>
+          <dd>{{ user.first_name }} {{ user.last_name }}</dd>
+
+          <dt class="text-gray-500">Email:</dt>
+          <dd>{{ user.email }}</dd>
+
+          <dt class="text-gray-500">Age:</dt>
+          <dd>{{ profile.age }}</dd>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold mb-2">Additional Information</h3>
+        <p>{{ profile.info }}</p>
+      </div>
+
+      <div class="mt-6">
+        <a href="{% url 'vpn:profile-update' pk=user.id  %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+          Edit Profile
+        </a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
-{#{% block content %}#}
-{#  <h1>VPN Profile</h1>#}
-{#  <p>Profile</p>#}
-{#  <h2>Dynamic content</h2>#}
-{#  <p>VPN service has the following record counts:</p>#}
-{#  <ul>#}
-{#    <li><strong>Sites:</strong> {{ num_sites }}</li>#}
-{#    <li><strong>Users:</strong> {{ num_users }}</li>#}
-{#  </ul>#}
-{#  <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}</p>#}
-{#{% endblock %}#}
+
